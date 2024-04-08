@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Fragmento01</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Software Deployment</string>
+    <string name="message_fragment1">Welcome for this Tutorial</string>
+    <string name="message_fragment2">Introduction</string>
+</resources>
