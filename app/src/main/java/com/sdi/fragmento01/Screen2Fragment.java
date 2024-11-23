@@ -1,15 +1,20 @@
 package com.sdi.fragmento01;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,18 +33,8 @@ public class Screen2Fragment extends Fragment {
     private String mParam2;
 
     public Screen2Fragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Screen2Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Screen2Fragment newInstance(String param1, String param2) {
         Screen2Fragment fragment = new Screen2Fragment();
         Bundle args = new Bundle();
@@ -59,12 +54,34 @@ public class Screen2Fragment extends Fragment {
     }
 
     private ImageView imageView;
+    private String URLImage = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_screen2, container, false);
         imageView = view.findViewById(R.id.imageView);
-        Picasso.get().load("https://www.atatus.com/glossary/content/images/2022/05/Software-Deployment-Process-Stages.png").into(imageView);
+
+        //URLImage = "http://10.0.2.2:8084/images/trunks.jpg";
+        URLImage = "http://192.168.1.103:8084/static/sorting-ShellSort.jpg";
+        Log.d("SDI", "onCreateView: "+URLImage);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final Bitmap bitmap = Picasso.get().load(URLImage).get();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    });
+                } catch (IOException e) {
+                    Log.e("SDI", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         return view;
     }
 }
